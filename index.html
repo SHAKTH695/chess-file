@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BioHealth Tracker & Reminder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e9f7ef;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #4CAF50;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    #main {
+      padding: 20px;
+      text-align: center;
+    }
+
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #motivation {
+      margin-top: 30px;
+      font-style: italic;
+      color: #2e8b57;
+    }
+
+    #logForm {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    #logForm input {
+      margin: 10px 0;
+      padding: 8px;
+      width: 100%;
+      max-width: 250px;
+    }
+
+    #logForm button {
+      margin-top: 20px;
+      background-color: #4CAF50;
+    }
+
+    input[type="number"] {
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BioHealth Tracker & Reminder</h1>
+  </header>
+
+  <div id="main">
+    <h2>Your Health Dashboard</h2>
+    
+    <!-- Buttons for logging activities and reminders -->
+    <button id="logActivityBtn">Log Activity</button>
+    <button id="setReminderBtn">Set a Reminder</button>
+    <button id="viewProgressBtn">View Progress</button>
+    
+    <!-- Display motivational quote -->
+    <div id="motivation">
+      <p id="quote">"Stay healthy, stay happy!"</p>
+    </div>
+
+    <!-- Activity Logging Form -->
+    <div id="logForm" style="display:none;">
+      <label for="waterIntake">Water Intake (in cups):</label>
+      <input type="number" id="waterIntake" placeholder="Enter amount in cups">
+      
+      <label for="exercise">Exercise (in minutes):</label>
+      <input type="number" id="exercise" placeholder="Enter exercise time in minutes">
+      
+      <label for="sleep">Sleep (in hours):</label>
+      <input type="number" id="sleep" placeholder="Enter hours of sleep">
+      
+      <label for="meals">Meals (Healthy/Unhealthy):</label>
+      <input type="text" id="meals" placeholder="Describe meal">
+      
+      <button id="saveLog">Save Log</button>
+    </div>
+  </div>
+
+  <script>
+    // Display a motivational quote
+    const quotes = [
+      "Stay healthy, stay happy!",
+      "Your health is your wealth!",
+      "Make time for your health today!",
+      "Good habits are the key to success!"
+    ];
+
+    document.getElementById('quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+    // Button to show the activity log form
+    document.getElementById('logActivityBtn').addEventListener('click', function() {
+      document.getElementById('logForm').style.display = 'block';
+    });
+
+    // Save log data
+    document.getElementById('saveLog').addEventListener('click', function() {
+      const water = document.getElementById('waterIntake').value;
+      const exercise = document.getElementById('exercise').value;
+      const sleep = document.getElementById('sleep').value;
+      const meals = document.getElementById('meals').value;
+
+      if (water && exercise && sleep && meals) {
+        localStorage.setItem('water', water);
+        localStorage.setItem('exercise', exercise);
+        localStorage.setItem('sleep', sleep);
+        localStorage.setItem('meals', meals);
+        alert('Activity logged successfully!');
+      } else {
+        alert('Please fill in all fields.');
+      }
+    });
+
+    // Set Reminder Button Logic
+    document.getElementById('setReminderBtn').addEventListener('click', function() {
+      let reminderType = prompt('Enter reminder type (e.g., Hydration, Exercise)');
+      let reminderTime = prompt('Enter reminder time (e.g., 10:00 AM)');
+
+      if (reminderType && reminderTime) {
+        localStorage.setItem('reminderType', reminderType);
+        localStorage.setItem('reminderTime', reminderTime);
+        alert('Reminder set successfully!');
+      }
+    });
+
+    // View Progress Button Logic
+    document.getElementById('viewProgressBtn').addEventListener('click', function() {
+      let water = localStorage.getItem('water');
+      let exercise = localStorage.getItem('exercise');
+      let sleep = localStorage.getItem('sleep');
+      let meals = localStorage.getItem('meals');
+      
+      let reminderType = localStorage.getItem('reminderType');
+      let reminderTime = localStorage.getItem('reminderTime');
+      
+      if (water && exercise && sleep && meals) {
+        alert(`Today's Activity Log:
+        Water Intake: ${water} cups
+        Exercise: ${exercise} minutes
+        Sleep: ${sleep} hours
+        Meals: ${meals}`);
+      } else {
+        alert('No activity logged!');
+      }
+
+      if (reminderType && reminderTime) {
+        alert('Your Reminder: ' + reminderType + ' at ' + reminderTime);
+      } else {
+        alert('No reminder set!');
+      }
+    });
+  </script>
+
+</body>
+</html>
